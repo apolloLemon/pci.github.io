@@ -7,6 +7,11 @@
 	right: 0;
 }
 
-#homebox {
-
+.window {
+	background-color: rgba(0,0,0,0.8);
+	border-style: solid;
+	border-width: 0.1em;
+	border-color: purple;
+	border-radius: 10px;
+	padding: 0.5em;
 }
