@@ -7,12 +7,18 @@
 		<link rel="stylesheet" href="assets/index.css">
 	</head>
 	<body>
-	<span id="page" class="grid_12 rsz_6-768">
+	<span id="page" class="grid_24">
 		
-		<div class="window tile tile_hrz_3x2">
-			<h1>Title</h1>
-			<p>paragraph</p>
+		<div id="w0" class="window tile tile_hrz_3x2">
+			<h1>pc[<span class="indx">0</span>] : projetcohesion.info</h1><hr>
+			<p>
+				Welcome to <span class="var">PC[<span class="indx">i</span>]</span>, the association for computer science students of the University of Angers. <br> <br>
+				To contact us, please use: contact@projetcohesion.info
+
+			</p>
 		</div>
+
+<!--
 		<div class="window tile tile_hrz_3x1">
 			<h1>Title</h1>
 			<p>paragraph</p>
@@ -21,9 +27,13 @@
 			<h1>Title</h1>
 			<p>paragraph</p>
 		</div>
-
+-->
 	</span>
-<canvas id="nokey" width="1920" height="1080"></canvas>
+<canvas id="nokey"></canvas>
 	</body>
 <script src="assets/background/background.js"></script>
+<script>
+	console.log(window.innerWidth);
+
+</script>
 </html>

@@ -8,10 +8,42 @@
 }
 
 .window {
-	background-color: rgba(0,0,0,0.8);
+	background-color: rgba(0,0,0,.8);
 	border-style: solid;
-	border-width: 0.1em;
+	border-width: .1em;
 	border-color: purple;
 	border-radius: 10px;
-	padding: 0.5em;
+	padding: 0em;
+	font-family: "Lucida Console", Monaco, monospace;
+}
+
+.window h1 {
+	color:teal;
+	font-size: .8em;
+	margin:0;
+	padding: .1em .5em;
+	background-color: black;
+	border-radius: 10px 10px 0px 0px;
+}
+.window p {
+	padding:.2em;
+	margin:0;
+}
+
+.window hr {
+	color:purple;
+	margin:0;
+	padding:0;
+}
+
+span .var {
+	color:teal;
+}
+span .indx {
+	color:orange;
+}
+
+#w0 {
+	grid-column: 2/12;
+	grid-row: 2/12;
 }
