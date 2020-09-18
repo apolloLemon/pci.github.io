@@ -1,13 +1,4 @@
-var ball = {
-      x: 0,
-      y: 0,
-      vx: 0,
-      vy: 0,
-      r: 0,
-      alpha: 1,
-      phase: 0
-   },
-   ball_color = {
+var ball_color = {
        r: 255,
        g: 255,
        b: 255
@@ -65,7 +56,7 @@ function getRandomBall(){
     switch(pos){
         case 'top':
             return {
-                x: randomSidePos(can_w),
+                x: randomSidePos(Background.canvas.width),
                 y: -R,
                 vx: getRandomSpeed('top')[0],
                 vy: getRandomSpeed('top')[1],
@@ -76,8 +67,8 @@ function getRandomBall(){
             break;
         case 'right':
             return {
-                x: can_w + R,
-                y: randomSidePos(can_h),
+                x: Background.canvas.width + R,
+                y: randomSidePos(Background.canvas.height),
                 vx: getRandomSpeed('right')[0],
                 vy: getRandomSpeed('right')[1],
                 r: R,
@@ -87,8 +78,8 @@ function getRandomBall(){
             break;
         case 'bottom':
             return {
-                x: randomSidePos(can_w),
-                y: can_h + R,
+                x: randomSidePos(Background.canvas.width),
+                y: Background.canvas.height + R,
                 vx: getRandomSpeed('bottom')[0],
                 vy: getRandomSpeed('bottom')[1],
                 r: R,
@@ -99,7 +90,7 @@ function getRandomBall(){
         case 'left':
             return {
                 x: -R,
-                y: randomSidePos(can_h),
+                y: randomSidePos(Background.canvas.height),
                 vx: getRandomSpeed('left')[0],
                 vy: getRandomSpeed('left')[1],
                 r: R,
@@ -117,11 +108,11 @@ function randomSidePos(length){
 function renderBalls(){
     Array.prototype.forEach.call(balls, function(b){
        if(!b.hasOwnProperty('type')){
-           ctx.fillStyle = 'rgba('+ball_color.r+','+ball_color.g+','+ball_color.b+','+b.alpha+')';
-           ctx.beginPath();
-           ctx.arc(b.x, b.y, R, 0, Math.PI*2, true);
-           ctx.closePath();
-           ctx.fill();
+           Background.ctx.fillStyle = 'rgba('+ball_color.r+','+ball_color.g+','+ball_color.b+','+b.alpha+')';
+           Background.ctx.beginPath();
+           Background.ctx.arc(b.x, b.y, R, 0, Math.PI*2, true);
+           Background.ctx.closePath();
+           Background.ctx.fill();
        }
     });
 }
@@ -133,7 +124,7 @@ function updateBalls(){
         b.x += b.vx;
         b.y += b.vy;
         
-        if(b.x > -(50) && b.x < (can_w+50) && b.y > -(50) && b.y < (can_h+50)){
+        if(b.x > -(50) && b.x < (Background.canvas.width+50) && b.y > -(50) && b.y < (Background.canvas.height+50)){
            new_balls.push(b);
         }
         
@@ -162,14 +153,14 @@ function renderLines(){
            if(fraction < 1){
                alpha = (1 - fraction).toString();
 
-               ctx.strokeStyle = 'rgba(150,150,150,'+alpha+')';
-               ctx.lineWidth = link_line_width;
+               Background.ctx.strokeStyle = 'rgba(150,150,150,'+alpha+')';
+               Background.ctx.lineWidth = link_line_width;
                
-               ctx.beginPath();
-               ctx.moveTo(balls[i].x, balls[i].y);
-               ctx.lineTo(balls[j].x, balls[j].y);
-               ctx.stroke();
-               ctx.closePath();
+               Background.ctx.beginPath();
+               Background.ctx.moveTo(balls[i].x, balls[i].y);
+               Background.ctx.lineTo(balls[j].x, balls[j].y);
+               Background.ctx.stroke();
+               Background.ctx.closePath();
            }
         }
     }
@@ -192,7 +183,7 @@ function addBallIfy(){
 
 // Render
 function render(){
-    ctx.clearRect(0, 0, can_w, can_h);
+    Background.ctx.clearRect(0, 0, Background.canvas.width, Background.canvas.height);
     
     renderBalls();
     
@@ -209,8 +200,8 @@ function render(){
 function initBalls(num){
     for(var i = 1; i <= num; i++){
         balls.push({
-            x: randomSidePos(can_w),
-            y: randomSidePos(can_h),
+            x: randomSidePos(Background.canvas.width),
+            y: randomSidePos(Background.canvas.height),
             vx: getRandomSpeed('top')[0],
             vy: getRandomSpeed('top')[1],
             r: R,
@@ -221,15 +212,13 @@ function initBalls(num){
 }
 // Init Canvas
 function initCanvas(){
-    canvas.setAttribute('width', window.innerWidth);
-    canvas.setAttribute('height', window.innerHeight);
-    
-    can_w = parseInt(canvas.getAttribute('width'));
-    can_h = parseInt(canvas.getAttribute('height'));
+    Background.canvas.setAttribute('width', window.innerWidth);
+    Background.canvas.setAttribute('height', window.innerHeight);
 }
+
 window.addEventListener('resize', function(e){
-    console.log('Window Resize...');
     initCanvas();
+    
 });
 
 function goMovie(){
@@ -239,22 +228,20 @@ function goMovie(){
 }
 
 // Mouse effect
-let canvas;
-let ctx;
+
+let Background = {};
+
 window.addEventListener( 'load' , () => {
-		canvas = document.getElementById('nokey')
-	let	can_w = parseInt(canvas.getAttribute('width')),
-   		can_h = parseInt(canvas.getAttribute('height'));
-   		ctx = canvas.getContext('2d');
+	Background.canvas = document.getElementById('nokey')
+   	Background.ctx = Background.canvas.getContext('2d');
 
 	
-	canvas.addEventListener('mouseenter', function(){
-    	console.log('mouseenter');
+	Background.canvas.addEventListener('mouseenter', function(){
     	mouse_in = true;
     	balls.push(mouse_ball);
 	});
-	canvas.addEventListener('mouseleave', function(){
-    	console.log('mouseleave');
+	
+	Background.canvas.addEventListener('mouseleave', function(){
     	mouse_in = false;
     	var new_balls = [];
     	Array.prototype.forEach.call(balls, function(b){
@@ -264,11 +251,11 @@ window.addEventListener( 'load' , () => {
     	});
     	balls = new_balls.slice(0);
 	});
-	canvas.addEventListener('mousemove', function(e){
+	
+	Background.canvas.addEventListener('mousemove', function(e){
     	var e = e || window.event;
     	mouse_ball.x = e.pageX;
     	mouse_ball.y = e.pageY;
-    	// console.log(mouse_ball);
 	});
 
 	goMovie();
