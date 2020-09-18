@@ -239,11 +239,12 @@ function goMovie(){
 }
 
 // Mouse effect
-
+let canvas;
+let ctx;
 window.addEventListener( 'load' , () => {
-	var canvas = document.getElementById('nokey'),
-		can_w = parseInt(canvas.getAttribute('width')),
-   		can_h = parseInt(canvas.getAttribute('height')),
+		canvas = document.getElementById('nokey')
+	let	can_w = parseInt(canvas.getAttribute('width')),
+   		can_h = parseInt(canvas.getAttribute('height'));
    		ctx = canvas.getContext('2d');
 
 	
