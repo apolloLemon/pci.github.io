@@ -1,8 +1,47 @@
-var ball_color = {
-       r: 255,
-       g: 255,
-       b: 255
-   },
+class Color {
+	constructor(r,g,b,a) {
+		//Vérification existence et type
+		if( (r === undefined) || (g === undefined) || (b === undefined) ) throw "Error in Color constructor,Color constructor must have at least 3 parameters";
+		if( typeof r != 'number' ) throw `Error in Color constructor, first paramater must be a number but an ${typeof r} as been given instead`;
+		if( typeof g != 'number' ) throw `Error in Color constructor, second paramater must be a number but an ${typeof g} as been given instead`;
+		if( typeof b != 'number' ) throw `Error in Color constructor, third paramater must be a number but an ${typeof b} as been given instead`;
+		if( typeof a != 'number' && a !== undefined) throw `Error in Color constructor, fourth paramater must be an number if it as been given, but an ${typeof r} as been found instead`;
+		
+		//Affectation
+		this.r = r;
+		this.g = g;
+		this.b = b;
+		this.a = (a)?a:null; // alpha | transparence
+	}
+	
+	toString(format='rgb') {
+		format=format.toLowerCase();
+		switch(format) {
+			case 'rgb':
+			case 'rgba':
+			case 'rvb':
+			case 'rvba':
+				if(this.a)
+					return `rgba(${this.r},${this.g},${this.b},${this.a})`;
+				else
+					return `rgb(${this.r},${this.g},${this.b})`;
+			case 'h':
+			case 'hex':
+			case 'hexa':
+			case 'hexadecimal':
+				const formatage = (decimal) => {hex = decimal.toString(16); while(hex.length<2)hex='0'+hex; return hex; }
+				if(this.a)
+					return '#'+formatage(this.r)+formatage(this.g)+formatage(this.b)+formatage(Math.floor(this.a*256));
+				else
+					return '#'+formatage(this.r)+formatage(this.g)+formatage(this.b);
+			default:
+				throw "Error in Color.toString(), the format given hasn't been recognized";
+		}
+			
+	}
+}
+
+const ball_color = new Color(255,255,255);
    R = 2,
    balls = [],
    alpha_f = 0.03,
@@ -108,7 +147,7 @@ function randomSidePos(length){
 function renderBalls(){
     Array.prototype.forEach.call(balls, function(b){
        if(!b.hasOwnProperty('type')){
-           Background.ctx.fillStyle = 'rgba('+ball_color.r+','+ball_color.g+','+ball_color.b+','+b.alpha+')';
+           Background.ctx.fillStyle = ball_color.toString();
            Background.ctx.beginPath();
            Background.ctx.arc(b.x, b.y, R, 0, Math.PI*2, true);
            Background.ctx.closePath();
